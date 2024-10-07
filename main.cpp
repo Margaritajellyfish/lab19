@@ -5,21 +5,27 @@
 using namespace std;
 
 struct Node{
-    double rate;
-    string comment;
-    Node * previous;
+    double rate1;
+    string comment1;
+    double rate2;
+    string comment2;
+    double rate3;
+    string comment3;
     Node * next;
 };
 class Movie{
     string title;
-    
+    Node *head;
 };
-ifstream fin;
-fin.open("input.txt");
+
 int main(){
-    int choice;
-    bool loop;
-    char again;
+    vector<Movie> movies;
+    ifstream fin;
+    fin.open("input.txt");
+    for(int i = 0; i<4; i++){
+        Movie movie = New Movie;
+        
+    }
     Node *head = nullptr;
     Node *tail = nullptr;
     Node *current = nullptr;
