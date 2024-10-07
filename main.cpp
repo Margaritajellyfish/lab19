@@ -2,73 +2,96 @@
 #include<ctime>
 #include<vector>
 #include<fstream>
+#include<iomanip>
 using namespace std;
 
-struct Node{
-    double rate1;
-    string comment1;
-    double rate2;
-    string comment2;
-    double rate3;
-    string comment3;
-    Node * next;
-};
-class Movie{
+class Movie {
+private:
+    
+    struct Node {
+        double rate;
+        string comment;
+        Node* next;
+    };
+
+    Node* head;
     string title;
-    Node *head;
+
+public:
+    
+    Movie(string movieTitle) : title(movieTitle), head(nullptr) {}
+
+    void addReview(string comment) {
+        
+        double randomRate = (rand() % 41 + 10) / 10.0;
+
+        Node* newNode = new Node;
+        newNode->rate = randomRate;
+        newNode->comment = comment;
+        newNode->next = head;
+        head = newNode;
+    }
+    void printReviews() {
+        cout << "Movie: " << title << endl;
+        Node* current = head;
+        int count = 1;
+        while (current != nullptr) {
+            cout << "> Review #" << count << ": Rating: " << current->rate
+                 << " - " << current->comment << endl;
+            current = current->next;
+            count++;
+        }
+        cout << endl;
+    }
+
+    ~Movie() {
+        Node* current = head;
+        while (current != nullptr) {
+            Node* temp = current;
+            current = current->next;
+            delete temp;
+        }
+    }
 };
 
-int main(){
+int main() {
+    srand(static_cast<unsigned int>(time(0)));
     vector<Movie> movies;
-    ifstream fin;
-    fin.open("input.txt");
-    for(int i = 0; i<4; i++){
-        Movie movie = New Movie;
-        
+
+    ifstream fin("input.txt");
+    if (!fin) {
+        cerr << "Could not open file." << endl;
+        return 1;
     }
-    Node *head = nullptr;
-    Node *tail = nullptr;
-    Node *current = nullptr;
-        Node *temp = new Node;
-        cout << "Enter review rating 0-5: ";
-        cin >> temp->rate;
-        cout << "Enter review comments: ";
-        cin.ignore();
-        getline(cin, temp->comment);
 
-        if(head==nullptr){
-            head = temp;
-            tail = temp;
-        }
-        else{
-            
-            temp->next = head;
-            head->previous = temp;
-            head = temp;
-        }
+    movies.push_back(Movie("a"));
+    movies.push_back(Movie("b"));
+    movies.push_back(Movie("c"));
+    movies.push_back(Movie("d"));
 
-        }
+    string review;
+    int count = 0;
+    
+    while (getline(fin, review)) {
+        if (count < 3) {
+            movies[0].addReview(review);
+        } else if (count < 6) {
+            movies[1].addReview(review);
+        } else if (count < 9) {
+            movies[2].addReview(review);
+        } else if (count <12){
+                movies[3].addReview(review);
+            }
 
-        cout << "Enter another review? Y/N: ";
-        cin >>again;
-        if ((again== 'Y')||(again== 'y')){
-            loop = true;
-        }
-        else{
-            loop = false;
-        }
-
-    }while(loop==true);
-    current = head;
-    cout << "Outputting all reviews: \n";
-    int count = 1;
-    double total = 0;
-    while(current){
-        cout << "> Review #" << count << ": " << current->rate << ": " << current->comment << endl;
-        total += current->rate;
-        current = current->next;
+        count++;
     }
-    cout << "> Average: " << total/ count;
+
+    fin.close();
+
+    
+    for (int i =0; i<4; i++) {
+        movies[i].printReviews();
+    }
 
     return 0;
 }
