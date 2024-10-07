@@ -58,7 +58,8 @@ int main() {
     srand(static_cast<unsigned int>(time(0)));
     vector<Movie> movies;
 
-    ifstream fin("input.txt");
+    ifstream fin;
+    fin.open("input.txt");
     if (!fin) {
         cerr << "Could not open file." << endl;
         return 1;
